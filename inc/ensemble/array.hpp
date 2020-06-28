@@ -1,7 +1,7 @@
 /* License: MIT. See LICENSE in root directory. */
 
 /**
- * \date 2020/06/27
+ * \date 2020/06/29
  */
 
 #pragma once
@@ -36,19 +36,19 @@ public:
 
 public:
 
-//    static
+    static
     T* CreateArray(uint newArraySize);
 
-//    static
+    static
     void DisposeArray(T* pData, uint active, uint size);
 
-//    static
+    static
     void AddElements(T const* pSrc, T* pDest, uint elementCount);
 
-//    static
+    static
     void MoveElements(T* pSrc, T* pDest, uint elementCount);
 
-//    static
+    static
     void RemoveElements(T* pData, uint count);
 
     static

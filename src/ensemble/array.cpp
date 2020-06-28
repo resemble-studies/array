@@ -1,7 +1,7 @@
 /* License: MIT. See LICENSE in root directory. */
 
 /**
- * \date 2020/06/27
+ * \date 2020/06/29
  */
 
 #include <cstring>
@@ -89,7 +89,7 @@ void Array<T>::RemoveElements(T* pData, uint count)
     {
         for (int i = 0; i < count; ++i)
         {
-//            delete pData[i]; // previously using wrapper function to destroy
+            delete &pData[i];
         }
     }
 }
@@ -103,7 +103,7 @@ void Array<T>::CreateEmptyElements(T *pData, uint count)
     {
         for (int i = 0; i < count; ++i)
         {
-            pData[i] = T(); // todo: Construct<T>
+            pData[i] = T();
         }
     }
 }
