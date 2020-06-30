@@ -326,10 +326,10 @@ void Array<T>::ShiftElementsUp(uint index, uint count)
     {
         if (index < m_Count && m_Count + count <= m_Allocated)
         {
-            auto newCount = m_Count - index;
+            int newCount = m_Count - index;
             if (newCount > count)
             {
-                auto v5 = m_Count;
+                int v5 = m_Count;
                 if (v5 != index)
                 {
                     do
@@ -357,7 +357,7 @@ void Array<T>::ShiftElementsDown(uint index, uint count)
     {
         if (index < m_Count && index >= count)
         {
-            auto newCount = m_Count - index;
+            int newCount = m_Count - index;
             if (newCount > count)
             {
                 auto i = index;
@@ -461,7 +461,7 @@ T* Array<T>::AppendNew()
 #if 1
     if (m_Count + 1 > m_Allocated)
     {
-        auto margin = m_Count - m_Allocated;
+        int margin = m_Count - m_Allocated;
         if (margin + 1 != 0)
         {
             auto v5 = m_GrowBy == 0 ? 1 : m_GrowBy;
