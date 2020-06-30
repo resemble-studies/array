@@ -133,6 +133,37 @@ bool Array<T>::CheckForGrowth(uint addCount)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
+bool Array<T>::CheckForInsertionGrowth(uint insertPoint, uint addCount)
+{
+    if (insertPoint == m_Count)
+    {
+        return CheckForGrowth(addCount);
+    }
+
+    if (m_Count + addCount <= m_Allocated)
+    {
+        ShiftElementsUp(insertPoint, addCount);
+    }
+    else
+    {
+        auto nExpandedSize = GetExpandedSize(addCount + m_Count - m_Allocated);
+        auto pNewArray = CreateArray(nExpandedSize);
+
+        MoveElements(m_pData, pNewArray, insertPoint);
+        MoveElements(&m_pData[insertPoint], &pNewArray[insertPoint + addCount], m_Count - insertPoint);
+
+        DisposeArray(m_pData, 0, m_Allocated);
+
+        m_Allocated = nExpandedSize;
+        m_pData = pNewArray;
+    }
+
+    return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<typename T>
 uint Array<T>::GetExpandedSize(uint additionalNeeded)
 {
     if (additionalNeeded > 0)
@@ -269,6 +300,55 @@ int Array<T>::Find(T const& item, uint startPos)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<typename T>
+void Array<T>::Insert(T const* item, uint index)
+{
+    if (index <= m_Count)
+    {
+        if (CheckForInsertionGrowth(index, 1))
+        {
+            AddElements(item, &m_pData[index], 1);
+            m_Count++;
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<typename T>
+void Array<T>::ShiftElementsUp(uint index, uint count)
+{
+    if (count != 0)
+    {
+        auto v5 = m_Count;
+        if (index < v5 && v5 + count <= m_Allocated)
+        {
+            auto v6 = v5 - index;
+            if (v5 - index > count)
+            {
+                if (v5 != index)
+                {
+                    while (true)
+                    {
+                        auto v7 = count < v6 ? count : v6;
+                        MoveElements(&m_pData[v5 - count], &m_pData[v5], v7);
+                        v5 -= v7;
+                        v6 -= v7;
+                        if (v6 == 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MoveElements(&m_pData[index], &m_pData[index + count], v5 - index);
+            }
+        }
+    }
+}
 
 template<typename T>
 void Array<T>::ShiftElementsDown(uint index, uint count)

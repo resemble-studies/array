@@ -64,6 +64,8 @@ public:
 
     bool CheckForGrowth(uint addCount);
 
+    bool CheckForInsertionGrowth(uint insertPoint, uint addCount);
+
     void ExpandCapacityBy(uint minNeeded);
 
     uint GetExpandedSize(uint additionalNeeded);
@@ -78,11 +80,15 @@ public:
 
     int Find(T const& item, uint startPos = 0);
 
+    void Insert(T const* item, uint index = 0);
+
     bool Remove(T const& item);
 
     void RemoveAt(uint index);
 
     void RemoveLast();
+
+    void ShiftElementsUp(uint index, uint count);
 
     void ShiftElementsDown(uint index, uint count);
 };
