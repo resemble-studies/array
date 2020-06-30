@@ -145,7 +145,7 @@ bool Array<T>::CheckForGrowth(uint addCount)
 template<typename T>
 uint Array<T>::GetExpandedSize(uint additionalNeeded)
 {
-    if (additionalNeeded)
+    if (additionalNeeded > 0)
     {
         auto tempGrowBy = m_GrowBy;
         if (m_GrowBy == 0)
@@ -154,7 +154,7 @@ uint Array<T>::GetExpandedSize(uint additionalNeeded)
         }
         auto tempAllocated = m_Allocated;
         auto v5 = tempAllocated + additionalNeeded;
-        if (tempAllocated == 0)
+        if (tempAllocated < 1)
         {
             tempAllocated = 1;
         }
@@ -174,7 +174,7 @@ uint Array<T>::GetExpandedSize(uint additionalNeeded)
 template<typename T>
 void Array<T>::ExpandCapacityBy(uint minNeeded)
 {
-    if (minNeeded)
+    if (minNeeded > 0)
     {
         ResizeArray(GetExpandedSize(minNeeded));
     }
