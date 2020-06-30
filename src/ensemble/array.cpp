@@ -321,30 +321,27 @@ void Array<T>::ShiftElementsUp(uint index, uint count)
 {
     if (count != 0)
     {
-        auto v5 = m_Count;
-        if (index < v5 && v5 + count <= m_Allocated)
+        if (index < m_Count && m_Count + count <= m_Allocated)
         {
-            auto v6 = v5 - index;
-            if (v5 - index > count)
+            auto newCount = m_Count - index;
+            if (newCount > count)
             {
+                auto v5 = m_Count;
                 if (v5 != index)
                 {
-                    while (true)
+                    do
                     {
-                        auto v7 = count < v6 ? count : v6;
+                        auto v7 = count < newCount ? count : newCount;
                         MoveElements(&m_pData[v5 - count], &m_pData[v5], v7);
                         v5 -= v7;
-                        v6 -= v7;
-                        if (v6 == 0)
-                        {
-                            break;
-                        }
+                        newCount -= v7;
                     }
+                    while (newCount != 0);
                 }
             }
             else
             {
-                MoveElements(&m_pData[index], &m_pData[index + count], v5 - index);
+                MoveElements(&m_pData[index], &m_pData[index + count], newCount);
             }
         }
     }
@@ -355,30 +352,23 @@ void Array<T>::ShiftElementsDown(uint index, uint count)
 {
     if (count != 0)
     {
-        auto i = index;
         if (index < m_Count && index >= count)
         {
-            auto v7 = m_Count - index;
-            if (v7 > count)
+            auto newCount = m_Count - index;
+            if (newCount > count)
             {
-                if (v7)
+                auto i = index;
+                while (newCount != 0)
                 {
-                    while (true)
-                    {
-                        auto v8 = count < v7 ? count : v7;
-                        MoveElements(&m_pData[i], &m_pData[i - count], v8);
-                        i += v8;
-                        v7 -= v8;
-                        if (v7 == 0)
-                        {
-                            break;
-                        }
-                    }
+                    auto v8 = count < newCount ? count : newCount;
+                    MoveElements(&m_pData[i], &m_pData[i - count], v8);
+                    i += v8;
+                    newCount -= v8;
                 }
             }
             else
             {
-                MoveElements(&m_pData[index], &m_pData[index - count], v7);
+                MoveElements(&m_pData[index], &m_pData[index - count], newCount);
             }
         }
     }
