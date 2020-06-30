@@ -166,28 +166,31 @@ bool Array<T>::CheckForInsertionGrowth(uint insertPoint, uint addCount)
 template<typename T>
 uint Array<T>::GetExpandedSize(uint additionalNeeded)
 {
-    if (additionalNeeded > 0)
+    if (additionalNeeded < 1)
     {
-        auto tempGrowBy = m_GrowBy;
-        if (m_GrowBy == 0)
-        {
-            tempGrowBy = 1;
-        }
-        auto tempAllocated = m_Allocated;
-        auto v5 = tempAllocated + additionalNeeded;
-        if (tempAllocated < 1)
-        {
-            tempAllocated = 1;
-        }
-        while (tempAllocated < v5)
-        {
-            tempAllocated *= 2;
-        }
-
-        return m_Allocated + tempGrowBy * ((tempGrowBy + additionalNeeded - 1) / tempGrowBy);
+        return m_Allocated;
     }
 
-    return m_Allocated;
+    int tempGrowBy = m_GrowBy;
+    if (tempGrowBy < 1)
+    {
+        tempGrowBy = 1;
+    }
+
+    int tempAllocated = m_Allocated;
+    if (tempAllocated < 1)
+    {
+        tempAllocated = 1;
+    }
+
+    while (tempAllocated < m_Allocated + additionalNeeded)
+    {
+        tempAllocated *= 2;
+    }
+
+    auto tempSize = m_Allocated + tempGrowBy * ((tempGrowBy + additionalNeeded - 1) / tempGrowBy);
+
+    return tempSize < tempAllocated ? tempSize : tempAllocated;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
