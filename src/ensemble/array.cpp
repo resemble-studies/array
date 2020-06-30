@@ -281,12 +281,6 @@ int Array<T>::Find(T const& item, uint startPos)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-T Min(T a, T b)
-{
-    return a < b ? a : b;
-}
-
-template<typename T>
 void Array<T>::ShiftElementsDown(uint index, uint count)
 {
     if (count != 0)
@@ -301,7 +295,7 @@ void Array<T>::ShiftElementsDown(uint index, uint count)
                 {
                     while (true)
                     {
-                        auto v8 = Min<uint>(count, v7);
+                        auto v8 = count < v7 ? count : v7;
                         MoveElements(&m_pData[i], &m_pData[i - count], v8);
                         i += v8;
                         v7 -= v8;
@@ -372,7 +366,7 @@ void Array<T>::ResizeArray(uint newSize)
             {
                 if (m_Count != 0)
                 {
-                    MoveElements(pOldData, pNewData, Min<uint>(m_Count, newSize));
+                    MoveElements(pOldData, pNewData, m_Count < newSize ? m_Count : newSize);
                     if (m_Count > newSize)
                     {
                         RemoveElements(&m_pData[newSize], m_Count - newSize);
