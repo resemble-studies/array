@@ -384,26 +384,38 @@ void Array<T>::RemoveAt(uint index)
 {
     if (index < m_Count)
     {
-        if (RemoveElements(&m_pData[index], 1), index < m_Count - 1)
+        // Remove 1 element at pointer.
+        RemoveElements(&m_pData[index], 1);
+
+        // So long as index was not last.
+        if (index < m_Count - 1)
         {
+            // Shift elements
             ShiftElementsDown(index + 1, 1);
         }
+
+        // We can now deduct element counter.
         m_Count--;
+
+        // No need to change allocated count since it could be handy later since we have extra room for future elements.
     }
 }
 
 template<typename T>
 bool Array<T>::Remove(T const& item)
 {
-    auto index = Find(item);
-    if (index != -1)
-    {
-        RemoveAt(index);
+    // Get index of item.
+    int index = Find(item);
 
-        return true;
+    // Check if item was found.
+    if (index == -1)
+    {
+        return false;
     }
 
-    return false;
+    RemoveAt(index);
+
+    return true;
 }
 
 template<typename T>
