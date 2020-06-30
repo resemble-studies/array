@@ -1,7 +1,7 @@
 /* License: MIT. See LICENSE in root directory. */
 
 /**
- * \date 2020/06/29
+ * \date 2020/07/01
  */
 
 #include <cstring>
@@ -20,8 +20,6 @@ Array<T>::Array(uint initialSize, uint growBy)
     m_pData(CreateArray(initialSize))
 {
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
 Array<T>::~Array()
@@ -43,16 +41,14 @@ T* Array<T>::CreateArray(uint newArraySize)
     return nullptr;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 template<typename T>
-void Array<T>::DisposeArray(T* pData, uint active, uint size)
+void Array<T>::DisposeArray(T* pData, uint count, uint allocated)
 {
-    if (pData != nullptr && size != 0)
+    if (pData != nullptr && allocated != 0)
     {
-        if (active != 0)
+        if (count != 0)
         {
-            RemoveElements(pData, active);
+            RemoveElements(pData, count);
         }
         delete pData;
     }
@@ -61,26 +57,22 @@ void Array<T>::DisposeArray(T* pData, uint active, uint size)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-void Array<T>::AddElements(T const* pSrc, T* pDest, uint elementCount)
+void Array<T>::AddElements(T const* pSrc, T* pDest, uint count)
 {
-    if (pSrc != nullptr && pDest != nullptr && elementCount != 0)
+    if (pSrc != nullptr && pDest != nullptr && count != 0)
     {
-        memcpy((char*)pDest, (char*)pSrc, sizeof(T) * elementCount);
+        memcpy((char*)pDest, (char*)pSrc, sizeof(T) * count);
     }
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-void Array<T>::MoveElements(T* pSrc, T* pDest, uint elementCount)
+void Array<T>::MoveElements(T* pSrc, T* pDest, uint count)
 {
-    if (pSrc != nullptr && pDest != nullptr && elementCount != 0)
+    if (pSrc != nullptr && pDest != nullptr && count != 0)
     {
-        memcpy((char*)pDest, (char*)pSrc, sizeof(T) * elementCount);
+        memcpy((char*)pDest, (char*)pSrc, sizeof(T) * count);
     }
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
 void Array<T>::RemoveElements(T* pData, uint count)
@@ -94,10 +86,8 @@ void Array<T>::RemoveElements(T* pData, uint count)
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 template<typename T>
-void Array<T>::CreateEmptyElements(T *pData, uint count)
+void Array<T>::CreateEmptyElements(T* pData, uint count)
 {
     if (pData != nullptr)
     {
@@ -111,7 +101,7 @@ void Array<T>::CreateEmptyElements(T *pData, uint count)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-T& Array<T>::operator[](int index) const
+T& Array<T>::operator[](uint index) const
 {
     return m_pData[index];
 }
@@ -314,19 +304,7 @@ void Array<T>::ShiftElementsDown(uint index, uint count)
     }
 }
 
-template<typename T>
-bool Array<T>::Remove(T const& item)
-{
-    auto index = Find(item);
-    if (index != -1)
-    {
-        RemoveAt(index);
-
-        return true;
-    }
-
-    return false;
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
 void Array<T>::RemoveAt(uint index)
@@ -339,6 +317,20 @@ void Array<T>::RemoveAt(uint index)
         }
         m_Count--;
     }
+}
+
+template<typename T>
+bool Array<T>::Remove(T const& item)
+{
+    auto index = Find(item);
+    if (index != -1)
+    {
+        RemoveAt(index);
+
+        return true;
+    }
+
+    return false;
 }
 
 template<typename T>

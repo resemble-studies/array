@@ -1,21 +1,19 @@
 /* License: MIT. See LICENSE in root directory. */
 
 /**
- * \date 2020/06/29
+ * \date 2020/07/01
  */
 
 #pragma once
 
 #include <string>
 
-namespace Ensemble {
+namespace Ensemble
+{
 
-/**
- *
- */
 template<typename T>
-class Array {
-
+class Array
+{
 protected:
 
     T* m_pData = nullptr;
@@ -40,19 +38,19 @@ public:
     T* CreateArray(uint newArraySize);
 
     static
-    void DisposeArray(T* pData, uint active, uint size);
+    void DisposeArray(T* pData, uint count, uint allocated);
 
     static
-    void AddElements(T const* pSrc, T* pDest, uint elementCount);
+    void AddElements(T const* pSrc, T* pDest, uint count);
 
     static
-    void MoveElements(T* pSrc, T* pDest, uint elementCount);
+    void MoveElements(T* pSrc, T* pDest, uint count);
 
     static
     void RemoveElements(T* pData, uint count);
 
     static
-    void CreateEmptyElements(T *pData, uint count);
+    void CreateEmptyElements(T* pData, uint count);
 
 public:
 
@@ -60,7 +58,7 @@ public:
     uint Count()
     { return m_Count; }
 
-    T& operator[](int index) const;
+    T& operator[](uint index) const;
 
     void Append(T const& item);
 
@@ -89,6 +87,7 @@ public:
     void ShiftElementsDown(uint index, uint count);
 };
 
-template class Array<std::string>;
+template
+class Array<std::string>;
 
 } // namespace Ensemble
