@@ -6,7 +6,7 @@
 
 #include <cstring>
 
-#include <ensemble/array.hpp>
+#include "../../inc/ensemble/array.hpp"
 
 namespace Ensemble {
 
